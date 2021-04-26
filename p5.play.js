@@ -1,6 +1,6 @@
 /*
 p5.play
-by Paolo Pedercini/molleindustria, 2015
+por Paolo Pedercini/molleindustria, 2015
 http://molleindustria.org/
 */
 
@@ -13,17 +13,17 @@ else
 factory(root.p5);
 }(this, function(p5) {
 /**
- * p5.play is a library for p5.js to facilitate the creation of games and gamelike
- * projects.
+ * p5.play é uma biblioteca para p5.js para facilitar a criação de jogos e projetos
+ * semelhantes.
  *
- * It provides a flexible Sprite class to manage visual objects in 2D space
- * and features such as animation support, basic collision detection
- * and resolution, mouse and keyboard interactions, and a virtual camera.
+ * Ele fornece uma classe Sprite flexível para gerenciar objetos visuais em espaço 2D
+ * e recursos como suporte de animação, detecção básica de colisão
+ * e resolução, interações de mouse e teclado e uma câmera virtual.
  *
- * p5.play is not a box2D-derived physics engine, it doesn't use events, and it's
- * designed to be understood and possibly modified by intermediate programmers.
+ * p5.play não é um mecanismo de física derivado de box2D, não usa eventos e é
+ * programado para ser entendido e possivelmente modificado por programadores intermediários.
  *
- * See the examples folder for more info on how to use this library.
+ * Veja a pasta de exemplos para mais informações sobre como usar esta biblioteca.
  *
  * @module p5.play
  * @submodule p5.play
@@ -32,27 +32,27 @@ factory(root.p5);
  */
 
 // =============================================================================
-//                         initialization
+//                         Inicialização
 // =============================================================================
 
 var DEFAULT_FRAME_RATE = 30;
 
-// This is the new way to initialize custom p5 properties for any p5 instance.
-// The goal is to migrate lazy P5 properties over to this method.
+// Esta é a nova maneira de inicializar propriedades p5 personalizadas para qualquer instância p5.
+// O objetivo é migrar propriedades P5 preguiçosas para este método.
 // @see https://github.com/molleindustria/p5.play/issues/46
 p5.prototype.registerMethod('init', function p5PlayInit() {
   /**
-   * The sketch camera automatically created at the beginning of a sketch.
-   * A camera facilitates scrolling and zooming for scenes extending beyond
-   * the canvas. A camera has a position, a zoom factor, and the mouse
-   * coordinates relative to the view.
+   * A câmera de esboço é criada automaticamente no início de um esboço.
+   * Uma câmera facilita a rolagem e o zoom para cenas que vão além
+   * da tela. Uma câmera tem uma posição, um fator de zoom e as
+   * coordenadas do mouse em relação à visualização.
    *
-   * In p5.js terms the camera wraps the whole drawing cycle in a
-   * transformation matrix but it can be disabled anytime during the draw
-   * cycle, for example to draw interface elements in an absolute position.
+   * Em termos de p5.js, a câmera envolve todo o ciclo desenhado em uma
+   * matriz de transformação, mas pode ser desativada a qualquer momento durante o ciclo de
+   * desenho, por exemplo, para desenhar elementos de interface em uma posição absoluta.
    *
-   * @property camera
-   * @type {camera}
+   * @property camera  @propriedade câmera
+   * @type {camera}    @tipo {câmera}
    */
   this.camera = new Camera(this, 0, 0, 1);
   this.camera.init = false;
@@ -68,18 +68,18 @@ p5.prototype.registerMethod('init', function p5PlayInit() {
   var startDate = new Date();
   this._startTime = startDate.getTime();
 
-  // Temporary canvas for supporting tint operations from image elements;
-  // see p5.prototype.imageElement()
+  // Tela temporária para suportar operações de tingimento de elementos de imagem;
+  // ver p5.prototype.imageElement()
   this._tempCanvas = document.createElement('canvas');
 });
 
-// This provides a way for us to lazily define properties that
-// are global to p5 instances.
+// Isso fornece uma maneira de definirmos preguiçosamente propriedades que
+// são globais para instâncias p5.
 //
-// Note that this isn't just an optimization: p5 currently provides no
-// way for add-ons to be notified when new p5 instances are created, so
-// lazily creating these properties is the *only* mechanism available
-// to us. For more information, see:
+// Observe que isso não é apenas uma otimização: atualmente, o p5 não oferece
+// nenhuma maneira de complementos serem notificados quando novas instâncias de p5 são criadas, então
+// criar essas propriedades devagar é o * único * mecanismo disponível
+// para nós. Para mais informação, ver:
 //
 // https://github.com/processing/p5.js/issues/1263
 function defineLazyP5Property(name, getter) {
@@ -100,9 +100,9 @@ function defineLazyP5Property(name, getter) {
   });
 }
 
-// This returns a factory function, suitable for passing to
-// defineLazyP5Property, that returns a subclass of the given
-// constructor that is always bound to a particular p5 instance.
+// Isso retorna uma função de fábrica, adequada para passar para
+// defineLazyP5Property, que retorna uma subclasse do dado
+// construtor que está sempre ligado a uma instância p5 particular.
 function boundConstructorFactory(constructor) {
   if (typeof(constructor) !== 'function')
     throw new Error('constructor must be a function');
@@ -121,19 +121,19 @@ function boundConstructorFactory(constructor) {
   };
 }
 
-// This is a utility that makes it easy to define convenient aliases to
-// pre-bound p5 instance methods.
+// Este é um utilitário que torna fácil definir apelidos convenientes para
+// métodos de instância p5 pré-ligados.
 //
-// For example:
+// Por exemplo:
 //
 //   var pInstBind = createPInstBinder(pInst);
 //
 //   var createVector = pInstBind('createVector');
 //   var loadImage = pInstBind('loadImage');
 //
-// The above will create functions createVector and loadImage, which can be
-// used similar to p5 global mode--however, they're bound to specific p5
-// instances, and can thus be used outside of global mode.
+// O acima irá criar funções createVector e loadImage, que podem ser
+// usadas de forma semelhante ao modo global p5; no entanto, eles estão vinculados a instâncias p5
+// específicas e, portanto, podem ser usadas fora do modo global.
 function createPInstBinder(pInst) {
   return function pInstBind(methodName) {
     var method = pInst[methodName];
@@ -144,19 +144,19 @@ function createPInstBinder(pInst) {
   };
 }
 
-// These are utility p5 functions that don't depend on p5 instance state in
-// order to work properly, so we'll go ahead and make them easy to
-// access without needing to bind them to a p5 instance.
+// Estas são funções utilitárias p5 que não dependem do estado da instância p5
+// para funcionar corretamente, então vamos prosseguir e torná-los fáceis de
+// acessar sem precisar vinculá-los a uma instância p5.
 var abs = p5.prototype.abs;
 var radians = p5.prototype.radians;
 var degrees = p5.prototype.degrees;
 
 // =============================================================================
-//                         p5 overrides
+//                        substituições p5
 // =============================================================================
 
-// Make the fill color default to gray (127, 127, 127) each time a new canvas is
-// created.
+// Torne a cor de preenchimento padrão para cinza (127, 127, 127) cada vez que uma nova tela for
+// criada.
 if (!p5.prototype.originalCreateCanvas_) {
   p5.prototype.originalCreateCanvas_ = p5.prototype.createCanvas;
   p5.prototype.createCanvas = function() {
@@ -166,8 +166,8 @@ if (!p5.prototype.originalCreateCanvas_) {
   };
 }
 
-// Make width and height optional for ellipse() - default to 50
-// Save the original implementation to allow for optional parameters.
+// Tornar largura e altura opcionais para elipse() - padrão para 50
+// Salve a implementação original para permitir parâmetros opcionais.
 if (!p5.prototype.originalEllipse_) {
   p5.prototype.originalEllipse_ = p5.prototype.ellipse;
   p5.prototype.ellipse = function(x, y, w, h) {
@@ -177,8 +177,8 @@ if (!p5.prototype.originalEllipse_) {
   };
 }
 
-// Make width and height optional for rect() - default to 50
-// Save the original implementation to allow for optional parameters.
+// Tornar largura e altura opcionais para rect() - padrão para 50
+// Salve a implementação original para permitir parâmetros opcionais.
 if (!p5.prototype.originalRect_) {
   p5.prototype.originalRect_ = p5.prototype.rect;
   p5.prototype.rect = function(x, y, w, h) {
@@ -188,7 +188,7 @@ if (!p5.prototype.originalRect_) {
   };
 }
 
-// Modify p5 to ignore out-of-bounds positions before setting touchIsDown
+// Modifique p5 para ignorar posições fora dos limites antes de definir touchIsDown
 p5.prototype._ontouchstart = function(e) {
   if (!this._curElement) {
     return;
@@ -201,7 +201,7 @@ p5.prototype._ontouchstart = function(e) {
     }
   }
   if (!validTouch) {
-    // No in-bounds (valid) touches, return and ignore:
+    // Nenhum toque dentro dos limites (válido), retorne e ignore:
     return;
   }
   var context = this._isGlobal ? window : this;
@@ -223,12 +223,12 @@ p5.prototype._ontouchstart = function(e) {
   }
 };
 
-// Modify p5 to handle CSS transforms (scale) and ignore out-of-bounds
-// positions before reporting touch coordinates
+// Modifique p5 para lidar com transformações CSS (dimensionar) e ignorar posições
+// fora dos limites antes de relatar as coordenadas de toque.
 //
-// NOTE: _updateNextTouchCoords() is nearly identical, but calls a modified
-// getTouchInfo() function below that scales the touch postion with the play
-// space and can return undefined
+// NOTA: _updateNextTouchCoords() é quase idêntico, mas chama uma função modificada
+// getTouchInfo() abaixo que dimensiona a posição de toque com o espaço de jogo
+// e pode retornar indefinido
 p5.prototype._updateNextTouchCoords = function(e) {
   var x = this.touchX;
   var y = this.touchY;
@@ -247,8 +247,8 @@ p5.prototype._updateNextTouchCoords = function(e) {
       var touches = [];
       var touchIndex = 0;
       for (var i = 0; i < e.touches.length; i++) {
-        // Only some touches are valid - only push valid touches into the
-        // array for the `touches` property.
+        // Apenas alguns toques são válidos - apenas insira toques válidos na
+        // matriz para a propriedade `touches`.
         touchInfo = getTouchInfo(this._curElement.elt, e, i);
         if (touchInfo) {
           touches[touchIndex] = touchInfo;
@@ -261,13 +261,13 @@ p5.prototype._updateNextTouchCoords = function(e) {
   this._setProperty('touchX', x);
   this._setProperty('touchY', y);
   if (!this._hasTouchInteracted) {
-    // For first draw, make previous and next equal
+    // Para o primeiro desenho, faça o anterior e o próximo iguais
     this._updateTouchCoords();
     this._setProperty('_hasTouchInteracted', true);
   }
 };
 
-// NOTE: returns undefined if the position is outside of the valid range
+// NOTA: retorna indefinido se a posição estiver fora do intervalo válido
 function getTouchInfo(canvas, e, i) {
   i = i || 0;
   var rect = canvas.getBoundingClientRect();
@@ -283,14 +283,14 @@ function getTouchInfo(canvas, e, i) {
   }
 }
 
-// Modify p5 to ignore out-of-bounds positions before setting mouseIsPressed
-// and isMousePressed
+// Modifique p5 para ignorar as posições fora dos limites antes de definir mouseIsPressed
+// e isMousePressed
 p5.prototype._onmousedown = function(e) {
   if (!this._curElement) {
     return;
   }
   if (!getMousePos(this._curElement.elt, e)) {
-    // Not in-bounds, return and ignore:
+    // Não dentro dos limites, retornar e ignorar:
     return;
   }
   var context = this._isGlobal ? window : this;
@@ -313,12 +313,12 @@ p5.prototype._onmousedown = function(e) {
   }
 };
 
-// Modify p5 to handle CSS transforms (scale) and ignore out-of-bounds
-// positions before reporting mouse coordinates
+// Modifique p5 para lidar com transformações CSS (dimensionar) e ignorar posições
+// fora dos limites antes de relatar as coordenadas do mouse
 //
-// NOTE: _updateNextMouseCoords() is nearly identical, but calls a modified
-// getMousePos() function below that scales the mouse position with the play
-// space and can return undefined.
+// NOTA: _updateNextMouseCoords() é quase idêntico, mas chama uma função modificada
+// getMousePos() abaixo que dimensiona a posição de toque com o espaço de jogo
+// e pode retornar indefinido
 p5.prototype._updateNextMouseCoords = function(e) {
   var x = this.mouseX;
   var y = this.mouseY;
@@ -338,13 +338,13 @@ p5.prototype._updateNextMouseCoords = function(e) {
   this._setProperty('winMouseX', e.pageX);
   this._setProperty('winMouseY', e.pageY);
   if (!this._hasMouseInteracted) {
-    // For first draw, make previous and next equal
+    // Para o primeiro desenho, faça o anterior e o próximo iguais
     this._updateMouseCoords();
     this._setProperty('_hasMouseInteracted', true);
   }
 };
 
-// NOTE: returns undefined if the position is outside of the valid range
+// NOTA: retorna indefinido se a posição estiver fora do intervalo válido
 function getMousePos(canvas, evt) {
   var rect = canvas.getBoundingClientRect();
   var xPos = evt.clientX - rect.left;
@@ -358,34 +358,34 @@ function getMousePos(canvas, evt) {
 }
 
 // =============================================================================
-//                         p5 extensions
-// TODO: It'd be nice to get these accepted upstream in p5
+//                         extensões p5
+// TODO: Seria bom fazer com que eles fossem aceitos no p5
 // =============================================================================
 
 /**
- * Projects a vector onto the line parallel to a second vector, giving a third
- * vector which is the orthogonal projection of that vector onto the line.
+ * Projeta um vetor na linha paralela a um segundo vetor, dando um terceiro
+ * vetor que é a projeção ortogonal desse vetor na linha.
  * @see https://en.wikipedia.org/wiki/Vector_projection
  * @method project
  * @for p5.Vector
  * @static
- * @param {p5.Vector} a - vector being projected
- * @param {p5.Vector} b - vector defining the projection target line.
- * @return {p5.Vector} projection of a onto the line parallel to b.
+ * @param {p5.Vector} a - vetor sendo projetado
+ * @param {p5.Vector} b - vetor que define a linha de destino da projeção.
+ * @return {p5.Vector} projeção de a na linha paralela a b.
  */
 p5.Vector.project = function(a, b) {
   return p5.Vector.mult(b, p5.Vector.dot(a, b) / p5.Vector.dot(b, b));
 };
 
 /**
- * Ask whether a vector is parallel to this one.
+ * Pergunte se um vetor é paralelo a este.
  * @method isParallel
  * @for p5.Vector
  * @param {p5.Vector} v2
- * @param {number} [tolerance] - margin of error for comparisons, comes into
- *        play when comparing rotated vectors.  For example, we want
- *        <1, 0> to be parallel to <0, 1>.rot(Math.PI/2) but float imprecision
- *        can get in the way of that.
+ * @param {number} [tolerance] - margem de erro para comparações, entra em
+  *        jogo ao comparar vetores girados. Por exemplo, nós queremos que
+  *        <1, 0> seja paralelo a <0, 1> .rot (Math.PI / 2), mas a imprecisão de flutuação
+  *         pode atrapalhar isso.
  * @return {boolean}
  */
 p5.Vector.prototype.isParallel = function(v2, tolerance) {
@@ -400,30 +400,30 @@ p5.Vector.prototype.isParallel = function(v2, tolerance) {
 };
 
 // =============================================================================
-//                         p5 additions
+//                         adições p5
 // =============================================================================
 
 /**
- * Loads an image from a path and creates an Image from it.
+ * Carrega uma imagem de um caminho e cria uma imagem a partir dele.
  * <br><br>
- * The image may not be immediately available for rendering
- * If you want to ensure that the image is ready before doing
- * anything with it, place the loadImageElement() call in preload().
- * You may also supply a callback function to handle the image when it's ready.
+ * A imagem pode não estar imediatamente disponível para renderização
+ * Se você quiser ter certeza de que a imagem está pronta antes de fazer
+ * qualquer coisa com ela, coloque a chamada loadImageElement() em preload().
+ * Você também pode fornecer uma função de retorno de chamada para lidar com a imagem quando ela estiver pronta.
  * <br><br>
- * The path to the image should be relative to the HTML file
- * that links in your sketch. Loading an from a URL or other
- * remote location may be blocked due to your browser's built-in
- * security.
+ * O caminho para a imagem deve ser relativo ao arquivo HTML 
+ * vinculado ao seu esboço. O carregamento de uma URL ou outro
+ * local remoto pode ser bloqueado devido à segurança integrada do
+ * seu navegador.
  *
  * @method loadImageElement
- * @param  {String} path Path of the image to be loaded
- * @param  {Function(Image)} [successCallback] Function to be called once
- *                                the image is loaded. Will be passed the
- *                                Image.
- * @param  {Function(Event)}    [failureCallback] called with event error if
- *                                the image fails to load.
- * @return {Image}                the Image object
+ * @param  {String} path Caminho da imagem a ser carregada
+ * @param  {Function(Image)} [successCallback] Função a ser chamada uma vez que
+  *                                a imagem é carregada. Será passada a
+  *                                Imagem.
+ * @param  {Function(Event)}    [failureCallback] chamada com o evento de erro se
+ *                                a imagem falhar ao carregar.
+ * @return {Image}                o objeto de Imagem
  */
 p5.prototype.loadImageElement = function(path, successCallback, failureCallback) {
   var img = new Image();
@@ -439,55 +439,55 @@ p5.prototype.loadImageElement = function(path, successCallback, failureCallback)
   };
   img.onerror = function(e) {
     p5._friendlyFileLoadError(0, img.src);
-    // don't get failure callback mixed up with decrementPreload
+    // não misture retorno de chamada de falha com decrementPreload
     if ((typeof failureCallback === 'function') &&
       (failureCallback !== decrementPreload)) {
       failureCallback(e);
     }
   };
 
-  //set crossOrigin in case image is served which CORS headers
-  //this will let us draw to canvas without tainting it.
-  //see https://developer.mozilla.org/en-US/docs/HTML/CORS_Enabled_Image
-  // When using data-uris the file will be loaded locally
-  // so we don't need to worry about crossOrigin with base64 file types
+  //definir crossOrigin caso a imagem seja veiculada com cabeçalhos CORS
+  //isso nos permitirá desenhar na tela sem contaminá-la.
+  //ver https://developer.mozilla.org/en-US/docs/HTML/CORS_Enabled_Image
+  // Ao usar data-uris, o arquivo será carregado localmente
+  // então não precisamos nos preocupar com crossOrigin com tipos de arquivo base64
   if(path.indexOf('data:image/') !== 0) {
     img.crossOrigin = 'Anonymous';
   }
 
-  //start loading the image
+  //começa a carregar a imagem
   img.src = path;
 
   return img;
 };
 
 /**
- * Draw an image element to the main canvas of the p5js sketch
+ * Desenhe um elemento de imagem para a tela principal do sketch p5js
  *
  * @method imageElement
- * @param  {Image}    imgEl    the image to display
- * @param  {Number}   [sx=0]   The X coordinate of the top left corner of the
- *                             sub-rectangle of the source image to draw into
- *                             the destination canvas.
- * @param  {Number}   [sy=0]   The Y coordinate of the top left corner of the
- *                             sub-rectangle of the source image to draw into
- *                             the destination canvas.
- * @param {Number} [sWidth=imgEl.width] The width of the sub-rectangle of the
- *                                      source image to draw into the destination
- *                                      canvas.
- * @param {Number} [sHeight=imgEl.height] The height of the sub-rectangle of the
- *                                        source image to draw into the
- *                                        destination context.
- * @param  {Number}   [dx=0]    The X coordinate in the destination canvas at
- *                              which to place the top-left corner of the
- *                              source image.
- * @param  {Number}   [dy=0]    The Y coordinate in the destination canvas at
- *                              which to place the top-left corner of the
- *                              source image.
- * @param  {Number}   [dWidth]  The width to draw the image in the destination
- *                              canvas. This allows scaling of the drawn image.
- * @param  {Number}   [dHeight] The height to draw the image in the destination
- *                              canvas. This allows scaling of the drawn image.
+ * @param  {Image}    imgEl    a imagem para exibir
+ * @param  {Number}   [sx=0]   A coordenada X do canto superior esquerdo do
+ *                             sub-retângulo da imagem de origem para desenhar
+ *                             na tela de destino.
+ * @param  {Number}   [sy=0]   A coordenada Y do canto superior esquerdo do
+ *                             sub-retângulo da imagem de origem para desenhar
+ *                             na tela de destino
+ * @param {Number} [sWidth=imgEl.width] A largura do sub-retângulo da
+ *                                      imagem de origem a ser desenhada na tela de
+ *                                      destino.
+ * @param {Number} [sHeight=imgEl.height] A altura do sub-retângulo da
+ *                                      imagem de origem a ser desenhada na tela de
+ *                                      destino.
+ * @param  {Number}   [dx=0]    A coordenada X na tela de destino na
+ *                              qual colocar o canto superior esquerdo da
+ *                              imagem de origem.
+ * @param  {Number}   [dy=0]    A coordenada Y na tela de destino na
+ *                              qual colocar o canto superior esquerdo da
+ *                              imagem de origem.
+ * @param  {Number}   [dWidth] A largura para desenhar a imagem na tela de
+ *                             destino. Isso permite dimensionar a imagem desenhada.
+ * @param  {Number}   [dHeight] A altura para desenhar a imagem na tela de
+ *                             destino. Isso permite dimensionar a imagem desenhada.
  * @example
  * <div>
  * <code>
@@ -505,7 +505,7 @@ p5.prototype.loadImageElement = function(path, successCallback, failureCallback)
  * <div>
  * <code>
  * function setup() {
- *   // here we use a callback to display the image after loading
+ *   // aqui usamos um retorno de chamada para exibir a imagem após o carregamento
  *   loadImageElement("assets/laDefense.jpg", function(imgEl) {
  *     imageElement(imgEl, 0, 0);
  *   });
@@ -514,14 +514,14 @@ p5.prototype.loadImageElement = function(path, successCallback, failureCallback)
  * </div>
  *
  * @alt
- * image of the underside of a white umbrella and grided ceiling above
- * image of the underside of a white umbrella and grided ceiling above
+ * imagem da parte inferior de um guarda-chuva branco e teto gradeado acima
+ * imagem da parte inferior de um guarda-chuva branco e teto gradeado acima
  *
  */
 p5.prototype.imageElement = function(imgEl, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) {
   /**
-   * Validates clipping params. Per drawImage spec sWidth and sHight cannot be
-   * negative or greater than image intrinsic width and height
+   * Valida parâmetros de recorte. Por especificação de drawImage, sWidth e sHight não podem ser
+   * negativos ou maiores do que a largura e altura intrínsecas da imagem
    * @private
    * @param {Number} sVal
    * @param {Number} iVal
@@ -576,9 +576,9 @@ p5.prototype.imageElement = function(imgEl, sx, sy, sWidth, sHeight, dx, dy, dWi
     this._renderer._imageMode);
 
   if (this._renderer._tint) {
-    // Just-in-time create/draw into a temp canvas so tinting can
-    // work within the renderer as it would for a p5.Image
-    // Only resize canvas if it's too small
+    // Criar/desenhar a tempo em uma tela temporária para que o tingimento
+    // possa funcionar dentro do renderizador como faria para uma p5.Imagem
+    // Apenas redimensione a tela se for muito pequena
     var context = this._tempCanvas.getContext('2d');
     if (this._tempCanvas.width < vals.w || this._tempCanvas.height < vals.h) {
       this._tempCanvas.width = Math.max(this._tempCanvas.width, vals.w);
@@ -589,8 +589,8 @@ p5.prototype.imageElement = function(imgEl, sx, sy, sWidth, sHeight, dx, dy, dWi
     context.drawImage(imgEl,
       sx, sy, sWidth, sHeight,
       0, 0, vals.w, vals.h);
-    // Call the renderer's image() method with an object that contains the Image
-    // as an 'elt' property and the temp canvas as well (when needed):
+    // Chame o método image() do renderizador com um objeto que contém a Imagem
+    // como uma propriedade 'elt' e também a tela temporária (quando necessário):
     this._renderer.image({canvas: this._tempCanvas},
       0, 0, vals.w, vals.h,
       vals.x, vals.y, vals.w, vals.h);
@@ -602,7 +602,7 @@ p5.prototype.imageElement = function(imgEl, sx, sy, sWidth, sHeight, dx, dy, dWi
 };
 
 /**
-* A Group containing all the sprites in the sketch.
+* Um grupo contendo todos os sprites no sketch.
 *
 * @property allSprites
 * @for p5.play
@@ -695,7 +695,7 @@ p5.prototype.regularPolygon = function(x, y, sides, size, rotation) {
     rotation = this.radians(rotation);
   }
 
-  // NOTE: only implemented for non-3D
+  // NOTA: apenas implementado para não 3D
   if (!this._renderer.isP3D) {
     this._validateParameters(
       'regularPolygon',
@@ -750,17 +750,17 @@ p5.prototype.shape = function() {
   if (!this._renderer._doStroke && !this._renderer._doFill) {
     return this;
   }
-  // NOTE: only implemented for non-3D
+  // NOTA: apenas implementado para não 3D
   if (!this._renderer.isP3D) {
-    // TODO: call this._validateParameters, once it is working in p5.js and
-    // we understand if it can be used for var args functions like this
+    // TODO: chamar this._validateParameters, uma vez que estiver funcionando no p5.js e
+    // nós entendendo se pode ser usada para funções var args assim
     this._renderer.shape.apply(this._renderer, arguments);
   }
   return this;
 };
 
 p5.prototype.rgb = function(r, g, b, a) {
-  // convert a from 0 to 255 to 0 to 1
+  // converter de 0 para 255 para 0 para 1
   if (!a) {
     a = 1;
   }
