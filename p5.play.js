@@ -819,24 +819,24 @@ defineLazyP5Property('World', function() {
 p5.prototype.spriteUpdate = true;
 
 /**
-   * A Sprite is the main building block of p5.play:
-   * an element able to store images or animations with a set of
-   * properties such as position and visibility.
-   * A Sprite can have a collider that defines the active area to detect
-   * collisions or overlappings with other sprites and mouse interactions.
+   * Um Sprite é o bloco de construção principal de p5.play:
+   * um elemento capaz de armazenar imagens ou animações com um conjunto de
+   * propriedades como posição e visibilidade.
+   * Um Sprite pode ter um colisor que define a área ativa para detectar
+   * colisões ou sobreposições com outros sprites e interações do mouse.
    *
-   * Sprites created using createSprite (the preferred way) are added to the
-   * allSprites group and given a depth value that puts it in front of all
-   * other sprites.
+   * Sprites criados usando createSprite (a forma preferida) são adicionados ao
+   * grupo allSprites e dado um valor de profundidade que o coloca na frente de todos
+   * outros sprites.
    *
    * @method createSprite
-   * @param {Number} x Initial x coordinate
-   * @param {Number} y Initial y coordinate
-   * @param {Number} width Width of the placeholder rectangle and of the
-   *                       collider until an image or new collider are set
-   * @param {Number} height Height of the placeholder rectangle and of the
-   *                       collider until an image or new collider are set
-   * @return {Object} The new sprite instance
+   * @param {Number} x Coordenada x inicial
+   * @param {Number} y Coordenada y inicial
+   * @param {Number} width Largura do retângulo marcador e do
+   *                       colisor até que uma imagem ou novo colisor seja definido
+   * @param {Number} height Altura do retângulo marcador e do
+   *                       colisor até que uma imagem ou novo colisor seja definido
+   * @return {Object} A nova instância de sprite
    */
 
 p5.prototype.createSprite = function(x, y, width, height) {
@@ -848,25 +848,25 @@ p5.prototype.createSprite = function(x, y, width, height) {
 
 
 /**
-   * Removes a Sprite from the sketch.
-   * The removed Sprite won't be drawn or updated anymore.
-   * Equivalent to Sprite.remove()
+   * Remove um Sprite do sketch.
+   * O Sprite removido não será mais desenhado ou atualizado.
+   * Equivalente a Sprite.remove()
    *
    * @method removeSprite
-   * @param {Object} sprite Sprite to be removed
+   * @param {Object} sprite Sprite a ser removido
 */
 p5.prototype.removeSprite = function(sprite) {
   sprite.remove();
 };
 
 /**
-* Updates all the sprites in the sketch (position, animation...)
-* it's called automatically at every draw().
-* It can be paused by passing a parameter true or false;
-* Note: it does not render the sprites.
+* Atualiza todos os sprites no sketch (posição, animação ...)
+* é chamado automaticamente a cada draw().
+* Pode ser pausado passando um parâmetro true ou false;
+* Nota: não renderiza os sprites.
 *
 * @method updateSprites
-* @param {Boolean} updating false to pause the update, true to resume
+* @param {Boolean} atualizando false para pausar a atualização, true para continuar
 */
 p5.prototype.updateSprites = function(upd) {
 
@@ -883,14 +883,14 @@ p5.prototype.updateSprites = function(upd) {
 };
 
 /**
-* Returns all the sprites in the sketch as an array
+* Retorna todos os sprites no sketch como uma matriz
 *
 * @method getSprites
-* @return {Array} Array of Sprites
+* @return {Array} Matriz de Sprites
 */
 p5.prototype.getSprites = function() {
 
-  //draw everything
+  //desenha tudo
   if(arguments.length===0)
   {
     return this.allSprites.toArray();
@@ -898,7 +898,7 @@ p5.prototype.getSprites = function() {
   else
   {
     var arr = [];
-    //for every tag
+    //para cada tag
     for(var j=0; j<arguments.length; j++)
     {
       for(var i = 0; i<this.allSprites.size(); i++)
@@ -914,16 +914,16 @@ p5.prototype.getSprites = function() {
 };
 
 /**
-* Displays a Group of sprites.
-* If no parameter is specified, draws all sprites in the
+* Exibe um grupo de sprites.
+* Se nenhum parâmetro for especificado, desenha todos os sprites no
 * sketch.
-* The drawing order is determined by the Sprite property "depth"
+* A ordem do desenho é determinada pela propriedade Sprite "profundidade"
 *
 * @method drawSprites
-* @param {Group} [group] Group of Sprites to be displayed
+* @param {Group} [group] Grupo de Sprites a serem exibidos
 */
 p5.prototype.drawSprites = function(group) {
-  // If no group is provided, draw the allSprites group.
+  // Se nenhum grupo for fornecido, desenhe o grupo allSprites.
   group = group || this.allSprites;
 
   if (typeof group.draw !== 'function')
@@ -935,11 +935,11 @@ p5.prototype.drawSprites = function(group) {
 };
 
 /**
-* Displays a Sprite.
-* To be typically used in the main draw function.
+* Exibe um Sprite.
+* Para ser usado normalmente na função draw principal.
 *
 * @method drawSprite
-* @param {Sprite} sprite Sprite to be displayed
+* @param {Sprite} sprite Sprite a ser exibido
 */
 p5.prototype.drawSprite = function(sprite) {
   if(sprite)
@@ -947,19 +947,19 @@ p5.prototype.drawSprite = function(sprite) {
 };
 
 /**
-* Loads an animation.
-* To be typically used in the preload() function of the sketch.
+* Carrega uma animação.
+* Para ser usado normalmente na função preload() do sketch.
 *
 * @method loadAnimation
-* @param {Sprite} sprite Sprite to be displayed
+* @param {Sprite} sprite Sprite a ser exibido
 */
 p5.prototype.loadAnimation = function() {
   return construct(this.Animation, arguments);
 };
 
 /**
- * Loads a Sprite Sheet.
- * To be typically used in the preload() function of the sketch.
+ * Carrega uma planilha de Sprite.
+ * Para ser usado normalmente na função preload() do sketch.
  *
  * @method loadSpriteSheet
  */
@@ -968,19 +968,19 @@ p5.prototype.loadSpriteSheet = function() {
 };
 
 /**
-* Displays an animation.
+* Exibe uma animação.
 *
 * @method animation
-* @param {Animation} anim Animation to be displayed
-* @param {Number} x X coordinate
-* @param {Number} y Y coordinate
+* @param {Animation} anim Animação a ser exibida
+* @param {Number} x coordenada X
+* @param {Number} y coordenada Y
 *
 */
 p5.prototype.animation = function(anim, x, y) {
   anim.draw(x, y);
 };
 
-//variable to detect instant presses
+//variável para detectar pressões instantâneas
 defineLazyP5Property('_p5play', function() {
   return {
     keyStates: {},
@@ -994,13 +994,13 @@ var KEY_IS_DOWN = 2;
 var KEY_WENT_UP = 3;
 
 /**
-* Detects if a key was pressed during the last cycle.
-* It can be used to trigger events once, when a key is pressed or released.
-* Example: Super Mario jumping.
+* Detecta se uma tecla foi pressionada durante o último ciclo.
+* Pode ser usado para disparar eventos uma vez, quando uma tecla é pressionada ou liberada.
+* Exemplo: Super Mario pulando.
 *
 * @method keyWentDown
-* @param {Number|String} key Key code or character
-* @return {Boolean} True if the key was pressed
+* @param {Number|String} key Código-chave ou caractere
+* @return {Boolean} True se a tecla foi pressionada
 */
 p5.prototype.keyWentDown = function(key) {
   return this._isKeyInState(key, KEY_WENT_DOWN);
@@ -1008,40 +1008,40 @@ p5.prototype.keyWentDown = function(key) {
 
 
 /**
-* Detects if a key was released during the last cycle.
-* It can be used to trigger events once, when a key is pressed or released.
-* Example: Spaceship shooting.
+* Detecta se uma tecla foi liberada durante o último ciclo.
+* Pode ser usado para disparar eventos uma vez, quando uma tecla é pressionada ou liberada.
+* Exemplo: disparos de nave espacial.
 *
 * @method keyWentUp
-* @param {Number|String} key Key code or character
-* @return {Boolean} True if the key was released
+* @param {Number|String} key Código-chave ou caractere
+* @return {Boolean} True se a tecla foi pressionada
 */
 p5.prototype.keyWentUp = function(key) {
   return this._isKeyInState(key, KEY_WENT_UP);
 };
 
 /**
-* Detects if a key is currently pressed
-* Like p5 keyIsDown but accepts strings and codes
+* Detecta se uma tecla está pressionada no momento
+* Como p5 keyIsDown, mas aceita strings e códigos
 *
 * @method keyDown
-* @param {Number|String} key Key code or character
-* @return {Boolean} True if the key is down
+* @param {Number|String} key Código-chave ou caractere
+* @return {Boolean} True se a tecla estiver pressionada
 */
 p5.prototype.keyDown = function(key) {
   return this._isKeyInState(key, KEY_IS_DOWN);
 };
 
 /**
- * Detects if a key is in the given state during the last cycle.
- * Helper method encapsulating common key state logic; it may be preferable
- * to call keyDown or other methods directly.
+ * Detecta se uma chave está no estado fornecido durante o último ciclo.
+ * Método auxiliar que encapsula a lógica de estado de chave comum; pode ser preferível
+ * chamar keyDown ou outros métodos diretamente.
  *
  * @private
  * @method _isKeyInState
- * @param {Number|String} key Key code or character
- * @param {Number} state Key state to check against
- * @return {Boolean} True if the key is in the given state
+ * @param {Number|String} key Código-chave ou caractere
+ * @param {Number} state Estado-chave para verificar
+ * @return {Boolean} True se a chave está no estado fornecido
  */
 p5.prototype._isKeyInState = function(key, state) {
   var keyCode;
@@ -1056,7 +1056,7 @@ p5.prototype._isKeyInState = function(key, state) {
     keyCode = key;
   }
 
-  //if undefined start checking it
+  //se indefinido, comece a verificar
   if(keyStates[keyCode]===undefined)
   {
     if(this.keyIsDown(keyCode))
@@ -1069,12 +1069,12 @@ p5.prototype._isKeyInState = function(key, state) {
 };
 
 /**
-* Detects if a mouse button is currently down
-* Combines mouseIsPressed and mouseButton of p5
+* Detecta se um botão do mouse está pressionado
+* Combina mouseIsPressed e mouseButton de p5
 *
 * @method mouseDown
-* @param {Number} [buttonCode] Mouse button constant LEFT, RIGHT or CENTER
-* @return {Boolean} True if the button is down
+* @param {Number} [buttonCode] Constante do botão do mouse ESQUERDA, DIREITA ou CENTRAL
+* @return {Boolean} True se o botão estiver pressionado
 */
 p5.prototype.mouseDown = function(buttonCode) {
   return this._isMouseButtonInState(buttonCode, KEY_IS_DOWN);
@@ -1085,20 +1085,20 @@ p5.prototype.mouseDown = function(buttonCode) {
 * Combines mouseIsPressed and mouseButton of p5
 *
 * @method mouseUp
-* @param {Number} [buttonCode] Mouse button constant LEFT, RIGHT or CENTER
-* @return {Boolean} True if the button is up
+* @param {Number} [buttonCode] Constante do botão do mouse ESQUERDA, DIREITA ou CENTRAL
+* @return {Boolean} True se o botão estiver solto
 */
 p5.prototype.mouseUp = function(buttonCode) {
   return this._isMouseButtonInState(buttonCode, KEY_IS_UP);
 };
 
 /**
- * Detects if a mouse button was released during the last cycle.
- * It can be used to trigger events once, to be checked in the draw cycle
+ * Detecta se um botão do mouse foi liberado durante o último ciclo.
+ * Pode ser usado para acionar eventos uma vez, para serem verificados no ciclo de desenho
  *
  * @method mouseWentUp
- * @param {Number} [buttonCode] Mouse button constant LEFT, RIGHT or CENTER
- * @return {Boolean} True if the button was just released
+ * @param {Number} [buttonCode] Constante do botão do mouse ESQUERDA, DIREITA ou CENTRAL
+ * @return {Boolean} True se o botão acabou de ser liberado
  */
 p5.prototype.mouseWentUp = function(buttonCode) {
   return this._isMouseButtonInState(buttonCode, KEY_WENT_UP);
@@ -1106,25 +1106,25 @@ p5.prototype.mouseWentUp = function(buttonCode) {
 
 
 /**
- * Detects if a mouse button was pressed during the last cycle.
- * It can be used to trigger events once, to be checked in the draw cycle
+ * Detecta se um botão do mouse foi pressionado durante o último ciclo.
+ * Pode ser usado para acionar eventos uma vez, para serem verificados no ciclo de desenho
  *
  * @method mouseWentDown
- * @param {Number} [buttonCode] Mouse button constant LEFT, RIGHT or CENTER
- * @return {Boolean} True if the button was just pressed
+ * @param {Number} [buttonCode] Constante do botão do mouse ESQUERDA, DIREITA ou CENTRAL
+ * @return {Boolean} True se o botão foi apenas pressionado
  */
 p5.prototype.mouseWentDown = function(buttonCode) {
   return this._isMouseButtonInState(buttonCode, KEY_WENT_DOWN);
 };
 
 /**
- * Returns a constant for a mouse state given a string or a mouse button constant.
+ * Retorna uma constante para um estado do mouse, dado um string ou uma constante de botão do mouse.
  *
  * @private
  * @method _clickKeyFromString
- * @param {Number|String} [buttonCode] Mouse button constant LEFT, RIGHT or CENTER
- *   or string 'leftButton', 'rightButton', or 'centerButton'
- * @return {Number} Mouse button constant LEFT, RIGHT or CENTER or value of buttonCode
+ * @param {Number|String} [buttonCode] Constante do botão do mouse ESQUERDA, DIREITA ou CENTRAL
+ *   ou string 'leftButton', 'rightButton', ou 'centerButton'
+ * @return {Number} Constante do botão do mouse ESQUERDA, DIREITA ou CENTRAL ou valor de buttonCode
  */
 p5.prototype._clickKeyFromString = function(buttonCode) {
   if (this.CLICK_KEY[buttonCode]) {
@@ -1134,7 +1134,7 @@ p5.prototype._clickKeyFromString = function(buttonCode) {
   }
 };
 
-// Map of strings to constants for mouse states.
+// Mapa de strings para constantes para estados do mouse.
 p5.prototype.CLICK_KEY = {
   'leftButton': p5.prototype.LEFT,
   'rightButton': p5.prototype.RIGHT,
@@ -1142,16 +1142,16 @@ p5.prototype.CLICK_KEY = {
 };
 
 /**
- * Detects if a mouse button is in the given state during the last cycle.
- * Helper method encapsulating common mouse button state logic; it may be
- * preferable to call mouseWentUp, etc, directly.
+ * Detecta se um botão do mouse está no estado fornecido durante o último ciclo.
+ * Método auxiliar que encapsula a lógica comum de estado do botão do mouse; pode ser
+ * preferível chamar mouseWentUp, etc, diretamente.
  *
  * @private
  * @method _isMouseButtonInState
- * @param {Number|String} [buttonCode] Mouse button constant LEFT, RIGHT or CENTER
- *   or string 'leftButton', 'rightButton', or 'centerButton'
+ * @param {Number|String} [buttonCode] Constante do botão do mouse ESQUERDA, DIREITA ou CENTRAL
+ *   ou string 'leftButton', 'rightButton', ou 'centerButton'
  * @param {Number} state
- * @return {boolean} True if the button was in the given state
+ * @return {boolean} True se o botão estava no estado fornecido
  */
 p5.prototype._isMouseButtonInState = function(buttonCode, state) {
   var mouseStates = this._p5play.mouseStates;
@@ -1161,7 +1161,7 @@ p5.prototype._isMouseButtonInState = function(buttonCode, state) {
   if(buttonCode === undefined)
     buttonCode = this.LEFT;
 
-  //undefined = not tracked yet, start tracking
+  //indefinido = ainda não rastreado, comece a rastrear
   if(mouseStates[buttonCode]===undefined)
   {
   if (this._mouseButtonIsPressed(buttonCode))
@@ -1175,7 +1175,7 @@ p5.prototype._isMouseButtonInState = function(buttonCode, state) {
 
 
 /**
- * An object storing all useful keys for easy access
+ * Um objeto que armazena todas as chaves úteis para fácil acesso
  * Key.tab = 9
  *
  * @private
