@@ -1278,8 +1278,8 @@ p5.prototype.KEY = {
 };
 
 /**
- * An object storing deprecated key aliases, which we still support but
- * should be mapped to valid aliases and generate warnings.
+ * Um objeto que armazena aliases de chave obsoletos, que ainda suportamos, mas
+ * deve ser mapeado para aliases válidos e gerar avisos.
  *
  * @private
  * @property KEY_DEPRECATIONS
@@ -1291,17 +1291,17 @@ p5.prototype.KEY_DEPRECATIONS = {
 };
 
 /**
- * Given a string key alias (as defined in the KEY property above), look up
- * and return the numeric JavaScript key code for that key.  If a deprecated
- * alias is passed (as defined in the KEY_DEPRECATIONS property) it will be
- * mapped to a valid key code, but will also generate a warning about use
- * of the deprecated alias.
+ * Dado um alias de chave de string (conforme definido na propriedade KEY acima), procure
+ * e retorna o código-chave numérico JavaScript para essa chave. Se um
+ * alias for passado (conforme definido na propriedade KEY_DEPRECATIONS) será
+ * mapeado para um código de chave válido, mas também gerará um aviso sobre o uso
+ * do alias obsoleto.
  *
  * @private
  * @method _keyCodeFromAlias
- * @param {!string} alias - a case-insensitive key alias
- * @return {number|undefined} a numeric JavaScript key code, or undefined
- *          if no key code matching the given alias is found.
+ * @param {!string} alias - um alias de chave que não diferencia maiúsculas de minúsculas
+ * @return {number|undefined} um código-chave JavaScript numérico ou indefinido
+ *          se nenhum código de chave correspondente ao alias fornecido for encontrado.
  */
 p5.prototype._keyCodeFromAlias = function(alias) {
   alias = alias.toUpperCase();
@@ -1314,60 +1314,60 @@ p5.prototype._keyCodeFromAlias = function(alias) {
   return this.KEY[alias];
 };
 
-//pre draw: detect keyStates
+//pre draw: detectar keyStates
 p5.prototype.readPresses = function() {
   var keyStates = this._p5play.keyStates;
   var mouseStates = this._p5play.mouseStates;
 
   for (var key in keyStates) {
-    if(this.keyIsDown(key)) //if is down
+    if(this.keyIsDown(key)) //se está inativo
     {
-      if(keyStates[key] === KEY_IS_UP)//and was up
+      if(keyStates[key] === KEY_IS_UP)//e estava ativo
         keyStates[key] = KEY_WENT_DOWN;
       else
-        keyStates[key] = KEY_IS_DOWN; //now is simply down
+        keyStates[key] = KEY_IS_DOWN; //agora está simplesmente inativo
     }
-    else //if it's up
+    else //se está inativo
     {
-      if(keyStates[key] === KEY_IS_DOWN)//and was up
+      if(keyStates[key] === KEY_IS_DOWN)//e estava ativo
         keyStates[key] = KEY_WENT_UP;
       else
-        keyStates[key] = KEY_IS_UP; //now is simply down
+        keyStates[key] = KEY_IS_UP; //agora está simplesmente inativo
     }
   }
 
   //mouse
   for (var btn in mouseStates) {
 
-    if(this._mouseButtonIsPressed(btn)) //if is down
+    if(this._mouseButtonIsPressed(btn)) //se está inativo
     {
-      if(mouseStates[btn] === KEY_IS_UP)//and was up
+      if(mouseStates[btn] === KEY_IS_UP)//e estava ativo
         mouseStates[btn] = KEY_WENT_DOWN;
       else
-        mouseStates[btn] = KEY_IS_DOWN; //now is simply down
+        mouseStates[btn] = KEY_IS_DOWN; //agora está simplesmente inativo
     }
-    else //if it's up
+    else //se está inativo
     {
-      if(mouseStates[btn] === KEY_IS_DOWN)//and was up
+      if(mouseStates[btn] === KEY_IS_DOWN)//e estava ativo
         mouseStates[btn] = KEY_WENT_UP;
       else
-        mouseStates[btn] = KEY_IS_UP; //now is simply down
+        mouseStates[btn] = KEY_IS_UP; //agora está simplesmente inativo
     }
   }
 
 };
 
 /**
-* Turns the quadTree on or off.
-* A quadtree is a data structure used to optimize collision detection.
-* It can improve performance when there is a large number of Sprites to be
-* checked continuously for overlapping.
+* Liga ou desliga o quadTree.
+* Um quadtree é uma estrutura de dados usada para otimizar a detecção de colisão.
+* Pode melhorar o desempenho quando há um grande número de Sprites a serem
+* verificados continuamente quanto a sobreposição.
 *
-* p5.play will create and update a quadtree automatically, however it is
-* inactive by default.
+* p5.play irá criar e atualizar um quadtree automaticamente, no entanto é
+* inativo por padrão.
 *
 * @method useQuadTree
-* @param {Boolean} use Pass true to enable, false to disable
+* @param {Boolean} use Pass true para ativar, false para desativar
 */
 p5.prototype.useQuadTree = function(use) {
 
@@ -1384,7 +1384,7 @@ p5.prototype.useQuadTree = function(use) {
     return false;
 };
 
-//the actual quadTree
+//o quadTree verdadeiro
 defineLazyP5Property('quadTree', function() {
   var quadTree = new Quadtree({
     x: 0,
@@ -1397,7 +1397,7 @@ defineLazyP5Property('quadTree', function() {
 });
 
 /*
-//framerate independent delta, doesn't really work
+//delta independente da taxa de quadros, realmente não funciona
 p5.prototype.deltaTime = 1;
 
 var now = Date.now();
@@ -1407,33 +1407,33 @@ var INTERVAL_60 = 0.0166666; //60 fps
 function updateDelta() {
 then = now;
 now = Date.now();
-deltaTime = ((now - then) / 1000)/INTERVAL_60; // seconds since last frame
+deltaTime = ((now - then) / 1000)/INTERVAL_60; // segundos desde o último quadro
 }
 */
 
 /**
-   * A Sprite is the main building block of p5.play:
-   * an element able to store images or animations with a set of
-   * properties such as position and visibility.
-   * A Sprite can have a collider that defines the active area to detect
-   * collisions or overlappings with other sprites and mouse interactions.
+   * Um Sprite é o bloco de construção principal de p5.play:
+   * um elemento capaz de armazenar imagens ou animações com um conjunto de
+   * propriedades como posição e visibilidade.
+   * Um Sprite pode ter um colisor que define a área ativa para detectar
+   * colisões ou sobreposições com outros sprites e interações do mouse.
    *
-   * To create a Sprite, use
+   * Para criar um Sprite, use
    * {{#crossLink "p5.play/createSprite:method"}}{{/crossLink}}.
    *
    * @class Sprite
    */
 
-// For details on why these docs aren't in a YUIDoc comment block, see:
+// Para obter detalhes sobre por que esses documentos não estão em um bloco de comentários do YUIDoc, consulte:
 //
 // https://github.com/molleindustria/p5.play/pull/67
 //
-// @param {Number} x Initial x coordinate
-// @param {Number} y Initial y coordinate
-// @param {Number} width Width of the placeholder rectangle and of the
-//                       collider until an image or new collider are set
-// @param {Number} height Height of the placeholder rectangle and of the
-//                        collider until an image or new collider are set
+// @param {Number} x Coordenada x inicial
+// @param {Number} y Coordenada y inicial
+// @param {Number} width Largura do retângulo marcador e do
+//                      colisor até que uma imagem ou novo colisor seja definido
+// @param {Number} height Altura do retângulo marcador e do
+//                      colisor até que uma imagem ou novo colisor seja definido
 function Sprite(pInst, _x, _y, _w, _h) {
   var pInstBind = createPInstBinder(pInst);
 
@@ -1469,40 +1469,40 @@ function Sprite(pInst, _x, _y, _w, _h) {
   var camera = pInst.camera;
 
 
-  // These are p5 constants that we'd like easy access to.
+  // Essas são constantes p5 às quais gostaríamos de ter acesso fácil.
   var RGB = p5.prototype.RGB;
   var CENTER = p5.prototype.CENTER;
   var LEFT = p5.prototype.LEFT;
   var BOTTOM = p5.prototype.BOTTOM;
 
   /**
-  * The sprite's position of the sprite as a vector (x,y).
+  * A posição do sprite, do sprite como um vetor (x, y).
   * @property position
   * @type {p5.Vector}
   */
   this.position = createVector(_x, _y);
 
   /**
-  * The sprite's position at the beginning of the last update as a vector (x,y).
+  * A posição do sprite no início da última atualização como um vetor (x, y).
   * @property previousPosition
   * @type {p5.Vector}
   */
   this.previousPosition = createVector(_x, _y);
 
   /*
-  The sprite's position at the end of the last update as a vector (x,y).
-  Note: this will differ from position whenever the position is changed
-  directly by assignment.
+  A posição do sprite no final da última atualização como um vetor (x, y).
+  Nota: isso será diferente da posição sempre que a posição for alterada
+  diretamente por atribuição.
   */
   this.newPosition = createVector(_x, _y);
 
-  //Position displacement on the x coordinate since the last update
+  //Deslocamento de posição na coordenada x desde a última atualização
   this.deltaX = 0;
   this.deltaY = 0;
 
   /**
-  * The sprite's velocity as a vector (x,y)
-  * Velocity is speed broken down to its vertical and horizontal components.
+  * A velocidade do sprite como um vetor (x, y)
+  * Velocidade é a velocidade dividida em seus componentes verticais e horizontais.
   *
   * @property velocity
   * @type {p5.Vector}
@@ -1510,8 +1510,8 @@ function Sprite(pInst, _x, _y, _w, _h) {
   this.velocity = createVector(0, 0);
 
   /**
-  * Set a limit to the sprite's scalar speed regardless of the direction.
-  * The value can only be positive. If set to -1, there's no limit.
+  * Defina um limite para a velocidade escalar do sprite, independentemente da direção.
+  * O valor só pode ser positivo. Se definido como -1, não há limite.
   *
   * @property maxSpeed
   * @type {Number}
@@ -1520,10 +1520,10 @@ function Sprite(pInst, _x, _y, _w, _h) {
   this.maxSpeed = -1;
 
   /**
-  * Friction factor, reduces the sprite's velocity.
-  * The friction should be close to 0 (eg. 0.01)
-  * 0: no friction
-  * 1: full friction
+  * Fator de atrito, reduz a velocidade do sprite.
+  * O atrito deve ser próximo a 0 (por exemplo: 0,01)
+  * 0: sem atrito
+  * 1: atrito total
   *
   * @property friction
   * @type {Number}
@@ -1532,14 +1532,14 @@ function Sprite(pInst, _x, _y, _w, _h) {
   this.friction = 0;
 
   /**
-  * The sprite's current collider.
-  * It can either be an Axis Aligned Bounding Box (a non-rotated rectangle)
-  * or a circular collider.
-  * If the sprite is checked for collision, bounce, overlapping or mouse events the
-  * collider is automatically created from the width and height
-  * of the sprite or from the image dimension in case of animate sprites
+  * O colisor atual do sprite.
+  * Pode ser uma caixa delimitadora alinhada com o eixo (um retângulo não girado)
+  * ou um colisor circular.
+  * Se o sprite estiver marcado para eventos de colisão, salto, sobreposição ou mouse, o
+  * colisor é criado automaticamente a partir da largura e altura
+  * do sprite ou da dimensão da imagem no caso de sprites animados
   *
-  * You can set a custom collider with Sprite.setCollider
+  * Você pode definir um colisor personalizado com Sprite.setCollider
   *
   * @property collider
   * @type {Object}
@@ -1547,12 +1547,12 @@ function Sprite(pInst, _x, _y, _w, _h) {
   this.collider = undefined;
 
   /**
-  * Object containing information about the most recent collision/overlapping
-  * To be typically used in combination with Sprite.overlap or Sprite.collide
-  * functions.
-  * The properties are touching.left, touching.right, touching.top,
-  * touching.bottom and are either true or false depending on the side of the
-  * collider.
+  * Objeto contendo informações sobre a colisão / sobreposição mais recente
+  * Para ser usado normalmente em combinação com funções Sprite.overlap ou
+  * Sprite.collide.
+  * As propriedades são touching.left, touching.right, touching.top,
+  * touch.bottom e são true ou false, dependendo do lado do
+  * colisor.
   *
   * @property touching
   * @type {Object}
@@ -1564,9 +1564,9 @@ function Sprite(pInst, _x, _y, _w, _h) {
   this.touching.bottom = false;
 
   /**
-  * The mass determines the velocity transfer when sprites bounce
-  * against each other. See Sprite.bounce
-  * The higher the mass the least the sprite will be affected by collisions.
+  * A massa determina a transferência de velocidade quando os sprites saltam
+  * uns contra os outros. Veja Sprite.bounce
+  * Quanto maior a massa, menos o sprite será afetado pelas colisões.
   *
   * @property mass
   * @type {Number}
@@ -1575,8 +1575,8 @@ function Sprite(pInst, _x, _y, _w, _h) {
   this.mass = 1;
 
   /**
-  * If set to true the sprite won't bounce or be displaced by collisions
-  * Simulates an infinite mass or an anchored object.
+  * Se definido como true, o sprite não irá saltar ou ser deslocado por colisões
+  * Simula uma massa infinita ou um objeto ancorado.
   *
   * @property immovable
   * @type {Boolean}
@@ -1584,15 +1584,15 @@ function Sprite(pInst, _x, _y, _w, _h) {
   */
   this.immovable = false;
 
-  //Coefficient of restitution - velocity lost in the bouncing
-  //0 perfectly inelastic , 1 elastic, > 1 hyper elastic
+  //Coeficiente de restituição - velocidade perdida no salto
+  //0 perfeitamente inelástico, 1 elástico,> 1 hiperelástico
 
   /**
-  * Coefficient of restitution. The velocity lost after bouncing.
-  * 1: perfectly elastic, no energy is lost
-  * 0: perfectly inelastic, no bouncing
-  * less than 1: inelastic, this is the most common in nature
-  * greater than 1: hyper elastic, energy is increased like in a pinball bumper
+  * Coeficiente de restituição. A velocidade perdida após o salto.
+  * 1: perfeitamente elástico, nenhuma energia é perdida
+  * 0: perfeitamente inelástico, sem salto
+  * menor que 1: inelástico, este é o mais comum na natureza
+  * maior que 1: hiperelástico, a energia é aumentada como em um pára-choque de pinball
   *
   * @property restitution
   * @type {Number}
@@ -1601,8 +1601,8 @@ function Sprite(pInst, _x, _y, _w, _h) {
   this.restitution = 1;
 
   /**
-  * Rotation in degrees of the visual element (image or animation)
-  * Note: this is not the movement's direction, see getDirection.
+  * Rotação em graus do elemento visual (imagem ou animação)
+  * Nota: esta não é a direção do movimento, consulte getDirection.
   *
   * @property rotation
   * @type {Number}
@@ -1622,8 +1622,8 @@ function Sprite(pInst, _x, _y, _w, _h) {
   });
 
   /**
-  * Internal rotation variable (expressed in degrees).
-  * Note: external callers access this through the rotation property above.
+  * Variável de rotação interna (expressa em graus).
+  * Nota: chamadores externos acessam isso por meio da propriedade de rotação acima.
   *
   * @private
   * @property _rotation
@@ -1633,8 +1633,8 @@ function Sprite(pInst, _x, _y, _w, _h) {
   this._rotation = 0;
 
   /**
-  * Rotation change in degrees per frame of thevisual element (image or animation)
-  * Note: this is not the movement's direction, see getDirection.
+  * Mudança de rotação em graus por quadro do elemento visual (imagem ou animação)
+  * Nota: esta não é a direção do movimento, consulte getDirection.
   *
   * @property rotationSpeed
   * @type {Number}
